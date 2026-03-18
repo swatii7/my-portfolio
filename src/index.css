@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-inter: "Inter", sans-serif;
+  --font-family-jetbrains-mono: "JetBrains Mono", monospace;
+  
+  --font-sans: var(--font-family-inter);
+  --font-mono: var(--font-family-jetbrains-mono);
+  
+  --color-primary: #7209b7;
+  --color-dark: #0f172a;
+  --color-light: #cbd5e1;
+  --color-secondary: #475569;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-elevated: #f8f9fa;
+  --color-subtle: #e8ebed;
+  --color-accent: #06b6d4;
+  --animate-pulse: pulse 2s cubic-bezier(.4,0,.6,1)infinite;
+  --color-common: #f0f2f5;
+  --color-tertiary: #94a3b8;
+}
+
+/* Light / dark overrides for design tokens */
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+  /* text-secondary in dark mode */
+  --color-primary: #a24bdb;
+  --color-secondary: #cbd5e1;
+  --color-border: #27272a;
+  --color-elevated: #141419;
+  --color-subtle: #1e1e28;
+  --color-common: #0a0a0f;
+}
+body{
+  background-color: #f0f2f5;
+  color: #0f172a;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.dark body{
+  background-color: #0a0a0f;
+  color: #f8fafc;
+}
+.animate-fadeInDelay1 {
+  animation: 1.5s ease-out forwards fadeInDelay1;
+}
+@keyframes fadeInDelay1 {
+  0%, 40% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeInDelay2 {
+  animation: 2s ease-out forwards fadeInDelay2;
+}
+@keyframes fadeInDelay2 {
+  0%, 60% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeInDelay3 {
+  animation: 2.5s ease-out forwards fadeInDelay3;
+}
+@keyframes fadeInDelay3 {
+  0%, 80% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Terminal-style stagger + typewriter */
+@keyframes terminalIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-in {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: terminalIn 500ms ease-out forwards;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--tw-ch, 20ch);
+  }
+}
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typing var(--tw-duration, 1200ms) steps(var(--tw-steps, 20)) forwards;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes caretBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  animation: caretBlink 900ms steps(1) infinite;
+}
+
+@keyframes caretHide {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Blink, then hide after a delay (set with --hide-after) */
+.caret-hide-after {
+  animation: caretBlink 900ms steps(1) infinite, caretHide 1ms linear forwards;
+  animation-delay: 0ms, var(--hide-after, 0ms);
+}
