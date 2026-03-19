@@ -7,8 +7,8 @@ import Uniqode from "../assets/image/uniqode.png";
 import AicoImage from "../assets/image/aico.png";
 import GoreadImg from "../assets/image/goread.png";
 import TechmarblesImg from "../assets/image/techmarbles.png";
-import BookMyShowImg from "../assets/image/bookmyshow.png";
-import ResumeBuilderImg from "../assets/image/resumebuilder.png";
+import BookMyShowImg from "../assets/image/bookMyShow.png";
+import ResumeBuilderImg from "../assets/image/resumeBuilder.png";
 function Card({ className = "", children }) {
     return (
         <div
