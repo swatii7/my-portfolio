@@ -565,7 +565,7 @@ const projects = [
             </Section>
 
             {/* Contact */}
-            <section className="py-20" id="contact">
+             <section className="py-20" id="contact">
                 <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 text-center mb-10">
                     <p className="font-mono text-primary text-sm">
                         05. What's next?
@@ -595,7 +595,26 @@ const projects = [
                         </div>
 
                         {/* Body */}
-                        <form className="p-8 space-y-6">
+                        <form
+                            className="p-8 space-y-6"
+                            onSubmit={(event) => {
+                                event.preventDefault();
+                                const form = event.currentTarget;
+                                const formData = new FormData(form);
+                                const name = formData.get("name") || "";
+                                const email = formData.get("email") || "";
+                                const message = formData.get("message") || "";
+
+                                const subject = encodeURIComponent(
+                                    "Portfolio contact from " + (name || "visitor")
+                                );
+                                const body = encodeURIComponent(
+                                    `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+                                );
+
+                                window.location.href = `mailto:swatic946@gmail.com?subject=${subject}&body=${body}`;
+                            }}
+                        >
                             {/* Name */}
                             <div className="space-y-2 text-left">
                                 <p className="flex gap-2 text-gray-400 text-sm uppercase font-mono">
@@ -605,6 +624,7 @@ const projects = [
                                     <span className="text-primary font-mono">➜</span>
                                     <input
                                         type="text"
+                                        name="name"
                                         placeholder="Your name"
                                         className="flex-1 bg-transparent border-none p-0 focus:ring-0 text-white placeholder:text-gray-600 font-mono"
                                     />
@@ -620,6 +640,7 @@ const projects = [
                                     <span className="text-primary font-mono">➜</span>
                                     <input
                                         type="email"
+                                        name="email"
                                         placeholder="your-email@example.com"
                                         className="flex-1 bg-transparent border-none p-0 focus:ring-0 text-white placeholder:text-gray-600 font-mono"
                                     />
@@ -635,6 +656,7 @@ const projects = [
                                     <span className="text-primary font-mono mt-1">➜</span>
                                     <textarea
                                         rows={4}
+                                        name="message"
                                         placeholder="Type your message here..."
                                         className="flex-1 bg-transparent border-none p-0 focus:ring-0 text-white placeholder:text-gray-600 font-mono resize-none"
                                     />
@@ -643,7 +665,7 @@ const projects = [
 
                             {/* Button */}
                                 <button
-                                    type="button"
+                                    type="submit"
                                     className="cursor-pointer w-full py-4 bg-primary rounded-lg text-white font-black uppercase tracking-[0.2em] hover:shadow-lg hover:shadow-primary/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <SendHorizonal className="w-5 h-5" />
