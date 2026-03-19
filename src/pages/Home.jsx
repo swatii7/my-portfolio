@@ -565,7 +565,7 @@ const projects = [
             </Section>
 
             {/* Contact */}
-            <section className="py-20">
+            <section className="py-20" id="contact">
                 <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 text-center mb-10">
                     <p className="font-mono text-primary text-sm">
                         05. What's next?
