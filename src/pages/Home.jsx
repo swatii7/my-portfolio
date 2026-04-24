@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Section from "../components/layout/Section";
 import { Briefcase, Code, Database, Download, ExternalLink, Github, Play, Rocket, SendHorizonal } from "lucide-react";
 import ResumePdf from "../assets/Resume.pdf";
@@ -20,8 +22,17 @@ function Card({ className = "", children }) {
 }
 
 export default function Home() {
+    const pageRef = useRef(null);
+    const experienceSectionRef = useRef(null);
+    const experienceLineRef = useRef(null);
     const typedLine = "Hi! I'm Swati Chaudhary";
     const typedSteps = typedLine.length;
+    const [contactForm, setContactForm] = useState({
+        name: "",
+        email: "",
+        message: "",
+    });
+    const [contactStatus, setContactStatus] = useState("");
 
     const handleDownloadCV = () => {
         const link = document.createElement("a");
@@ -256,8 +267,134 @@ const projects = [
 
     const [visibleProjects, setVisibleProjects] = useState(3);
 
+    useLayoutEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const page = pageRef.current;
+        const section = experienceSectionRef.current;
+        const line = experienceLineRef.current;
+        if (!page) return;
+
+        const ctx = gsap.context(() => {
+            const timelineCards = gsap.utils.toArray("[data-exp-card]");
+            const timelineIcons = gsap.utils.toArray("[data-exp-icon]");
+            const sectionUpBlocks = gsap.utils.toArray("[data-animate='section-up']");
+            const splitRows = gsap.utils.toArray("[data-animate='split']");
+
+            if (section && line) {
+                gsap.set(line, { scaleY: 0, transformOrigin: "top center" });
+                gsap.set(timelineCards, { autoAlpha: 0, y: 52 });
+                gsap.set(timelineIcons, { autoAlpha: 0, scale: 0.6 });
+
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 75%",
+                        end: "bottom 70%",
+                        scrub: 1.2,
+                    },
+                })
+                    .to(line, { scaleY: 1, ease: "sine.inOut", duration: 1.1 })
+                    .to(
+                        timelineCards,
+                        {
+                            autoAlpha: 1,
+                            y: 0,
+                            duration: 0.72,
+                            ease: "power2.out",
+                            stagger: 0.24,
+                        },
+                        0.08
+                    )
+                    .to(
+                        timelineIcons,
+                        {
+                            autoAlpha: 1,
+                            scale: 1,
+                            duration: 0.62,
+                            ease: "back.out(1.45)",
+                            stagger: 0.24,
+                        },
+                        0.28
+                    );
+            }
+
+            sectionUpBlocks.forEach((block) => {
+                gsap.fromTo(
+                    block,
+                    { autoAlpha: 0, y: 36 },
+                    {
+                        autoAlpha: 1,
+                        y: 0,
+                        duration: 0.9,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: block,
+                            start: "top 88%",
+                            toggleActions: "play none none reverse",
+                        },
+                    }
+                );
+            });
+
+            splitRows.forEach((row) => {
+                const leftCol = row.querySelector("[data-animate-col='left']");
+                const rightCol = row.querySelector("[data-animate-col='right']");
+                if (!leftCol || !rightCol) return;
+
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: row,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse",
+                    },
+                })
+                    .fromTo(
+                        leftCol,
+                        { autoAlpha: 0, x: -48 },
+                        { autoAlpha: 1, x: 0, duration: 0.95, ease: "power2.out" }
+                    )
+                    .fromTo(
+                        rightCol,
+                        { autoAlpha: 0, x: 48 },
+                        { autoAlpha: 1, x: 0, duration: 0.95, ease: "power2.out" },
+                        0.2
+                    );
+            });
+        }, page);
+
+        return () => ctx.revert();
+    }, []);
+
+    const handleExecuteSend = () => {
+        const name = contactForm.name.trim();
+        const email = contactForm.email.trim();
+        const message = contactForm.message.trim();
+
+        if (!name || !email || !message) {
+            setContactStatus("Please fill name, email and message.");
+            return;
+        }
+
+        const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+        const body = encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+        );
+        const mailtoUrl = `mailto:swatic946@gmail.com?subject=${subject}&body=${body}`;
+
+        // Trigger the default mail client with prefilled content.
+        const link = document.createElement("a");
+        link.href = mailtoUrl;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setContactStatus("Mail draft opened successfully.");
+    };
+
     return (
-        <main className="bg-common">
+        <main ref={pageRef} className="bg-common">
             {/* Hero */}
             <section className="pt-28 pb-20">
                 <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
@@ -365,8 +502,8 @@ const projects = [
                 eyebrow="01."
                 title="About Me"
             >
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-                    <div className="space-y-4 md:space-y-6">
+                <div data-animate="split" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+                    <div data-animate-col="left" className="space-y-4 md:space-y-6">
                         <p className="text-secondary-color text-base md:text-lg leading-relaxed">
                             I'm a frontend developer passionate about creating intuitive and high-performance web experiences. With expertise in React, Next.js, and modern UI technologies, I focus on building scalable applications with clean architecture and responsive design.
                         </p>
@@ -393,7 +530,7 @@ const projects = [
                         </div>
                     </div>
 
-                    <div className="relative group mx-auto lg:ml-auto mt-8 lg:mt-0">
+                    <div data-animate-col="right" className="relative group mx-auto lg:ml-auto mt-8 lg:mt-0">
                         <div className="absolute -inset-4 bg-primary/20 rounded-2xl blur-2xl group-hover:bg-primary/30 transition-all"></div>
                         <div className="relative w-56 h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-2xl border-2 border-primary overflow-hidden z-10">
                         <img src={ProfileImg} alt="Swati Chaudhary" className="object-cover grayscale transition-all duration-700 ease-in-out hidden lg:block object-top w-full h-full" />
@@ -410,13 +547,18 @@ const projects = [
                 eyebrow="02."
                 title="Professional Experience"
             >
-                <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-border-strong before:to-transparent">
+                <div ref={experienceSectionRef} className="relative space-y-8">
+                    <div
+                        ref={experienceLineRef}
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 ml-5 -translate-x-px md:mx-auto md:translate-x-0 h-full w-0.5 bg-linear-to-b from-transparent via-border-strong to-transparent"
+                    />
                     {expArray.map((i) => (
-                        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                            <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-border-strong bg-common text-primary shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <div key={`${i.company}-${i.year}`} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                            <div data-exp-icon className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-border-strong bg-common text-primary shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
                                 <Briefcase />
                             </div>
-                            <div className="rounded-xl transition-all duration-200 bg-elevated border border-border hover:border-primary/50 shadow-sm hover:shadow-md w-[calc(100%-4rem)] md:w-[45%] p-6">
+                            <div data-exp-card className="rounded-xl transition-all duration-200 bg-elevated border border-border hover:border-primary/50 shadow-sm hover:shadow-md w-[calc(100%-4rem)] md:w-[45%] p-6">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
                                     <h3 className="text-xl font-bold text-primary-color">{i.title}</h3>
                                     <time className="font-mono text-xs text-primary font-bold">{i.year}</time>
@@ -446,7 +588,7 @@ const projects = [
                 eyebrow="03."
                 title="Skills Inventory"
             >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div data-animate="section-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {skillsData.map((col, index) => (
                         <Card key={col.title} className="rounded-xl transition-all duration-200 bg-elevated border border-color hover:border-primary/50 shadow-sm hover:shadow-md p-6 md:p-8 space-y-6">
                             <div className="flex items-center gap-3 mb-6">
@@ -496,7 +638,7 @@ const projects = [
                 eyebrow="04."
                 title="Featured Projects"
             >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div data-animate="section-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {projects.slice(0, visibleProjects).map((project) => (
                         <Card
                             key={project.title}
@@ -566,7 +708,7 @@ const projects = [
 
             {/* Contact */}
              <section className="py-20" id="contact">
-                <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 text-center mb-10">
+                <div data-animate="section-up" className="mx-auto w-full max-w-4xl px-4 sm:px-6 text-center mb-10">
                     <p className="font-mono text-primary text-sm">
                         05. What's next?
                     </p>
@@ -579,7 +721,7 @@ const projects = [
                     </p>
                 </div>
 
-                <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
+                <div data-animate="section-up" className="mx-auto w-full max-w-4xl px-4 sm:px-6">
                     <div className="w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-gray-900/95 backdrop-blur-sm">
                         {/* Window header */}
                         <div className="bg-gray-800/50 px-4 py-3 border-b border-white/10 flex items-center justify-between">
@@ -595,26 +737,7 @@ const projects = [
                         </div>
 
                         {/* Body */}
-                        <form
-                            className="p-8 space-y-6"
-                            onSubmit={(event) => {
-                                event.preventDefault();
-                                const form = event.currentTarget;
-                                const formData = new FormData(form);
-                                const name = formData.get("name") || "";
-                                const email = formData.get("email") || "";
-                                const message = formData.get("message") || "";
-
-                                const subject = encodeURIComponent(
-                                    "Portfolio contact from " + (name || "visitor")
-                                );
-                                const body = encodeURIComponent(
-                                    `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-                                );
-
-                                window.location.href = `mailto:swatic946@gmail.com?subject=${subject}&body=${body}`;
-                            }}
-                        >
+                        <form className="p-8 space-y-6" onSubmit={(event) => event.preventDefault()}>
                             {/* Name */}
                             <div className="space-y-2 text-left">
                                 <p className="flex gap-2 text-gray-400 text-sm uppercase font-mono">
@@ -626,6 +749,13 @@ const projects = [
                                         type="text"
                                         name="name"
                                         placeholder="Your name"
+                                        value={contactForm.name}
+                                        onChange={(event) =>
+                                            setContactForm((prev) => ({
+                                                ...prev,
+                                                name: event.target.value,
+                                            }))
+                                        }
                                         className="flex-1 bg-transparent border-none p-0 focus:ring-0 text-white placeholder:text-gray-600 font-mono"
                                     />
                                 </div>
@@ -642,6 +772,13 @@ const projects = [
                                         type="email"
                                         name="email"
                                         placeholder="your-email@example.com"
+                                        value={contactForm.email}
+                                        onChange={(event) =>
+                                            setContactForm((prev) => ({
+                                                ...prev,
+                                                email: event.target.value,
+                                            }))
+                                        }
                                         className="flex-1 bg-transparent border-none p-0 focus:ring-0 text-white placeholder:text-gray-600 font-mono"
                                     />
                                 </div>
@@ -658,6 +795,13 @@ const projects = [
                                         rows={4}
                                         name="message"
                                         placeholder="Type your message here..."
+                                        value={contactForm.message}
+                                        onChange={(event) =>
+                                            setContactForm((prev) => ({
+                                                ...prev,
+                                                message: event.target.value,
+                                            }))
+                                        }
                                         className="flex-1 bg-transparent border-none p-0 focus:ring-0 text-white placeholder:text-gray-600 font-mono resize-none"
                                     />
                                 </div>
@@ -665,12 +809,18 @@ const projects = [
 
                             {/* Button */}
                                 <button
-                                    type="submit"
+                                    type="button"
+                                    onClick={handleExecuteSend}
                                     className="cursor-pointer w-full py-4 bg-primary rounded-lg text-white font-black uppercase tracking-[0.2em] hover:shadow-lg hover:shadow-primary/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <SendHorizonal className="w-5 h-5" />
                                     Execute Send
                                 </button>
+                                {contactStatus && (
+                                    <p className="text-center text-xs text-accent font-mono">
+                                        {contactStatus}
+                                    </p>
+                                )}
                         </form>
                     </div>
                 </div>
