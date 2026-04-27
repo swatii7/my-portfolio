@@ -79,7 +79,7 @@ export default function Footer() {
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href="https://www.linkedin.com/"
+                href="http://www.linkedin.com/in/swati-sartan"
                 target="_blank"
                 className="p-3 bg-elevated border border-border rounded-lg hover:border-primary hover:bg-primary hover:text-white transition-all"
               >
