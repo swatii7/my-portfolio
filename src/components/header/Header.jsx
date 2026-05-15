@@ -56,8 +56,9 @@ export default function Header(){
         { id: 1, label: "About", href: "#about" },
         { id: 2, label: "Experience", href: "#experience" },
         { id: 3, label: "Skills", href: "#skills" },
-        { id: 4, label: "Projects", href: "#projects" },
-        { id: 5, label: "Contact", href: "#contact" }
+        { id: 4, label: "Learning", href: "#learning" },
+        { id: 5, label: "Projects", href: "#projects" },
+        { id: 6, label: "Contact", href: "#contact" }
     ]
     return (
         <header
