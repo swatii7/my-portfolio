@@ -209,7 +209,7 @@ const projects = [
                 "TechMarbles is a professional web agency website showcasing services like web development, UI/UX design, and QA testing, along with its workflow, projects, and client feedback in a clean, modern layout.",
             image: TechmarblesImg,
             imageAlt: "Techmarbles website preview",
-            tags: ["WordPress", "HTML", "CSS", "JavaScript", "PHP"],
+            tags: ["WordPress(Elementor)", "HTML", "CSS", "JavaScript", "PHP"],
             liveUrl: "https://techmarbles.com/",
         },
         {
