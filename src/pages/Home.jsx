@@ -243,7 +243,7 @@ const projects = [
                 { name: 'JavaScript', level: 80 },
                 { name: 'GSAP Animation', level: 80 },
                 { name: 'Bootstrap', level: 100 },
-                { name: 'Mobile-friendly Design', level: 80 },
+                { name: 'Mobile-friendly Design', level: 100 },
             ],
         },
         {
