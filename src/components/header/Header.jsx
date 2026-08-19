@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Globe, Menu, Moon, Sun, Terminal, X } from "lucide-react";
-import ResumePdf from "../../assets/Resume.pdf";
+import ResumePdf from "../../assets/swati_resume.pdf";
 
 export default function Header(){
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,7 +9,7 @@ export default function Header(){
     const handleDownloadCV = () => {
         const link = document.createElement("a");
         link.href = ResumePdf;
-        link.download = "Resume.pdf";
+        link.download = "swati_resume.pdf";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -56,8 +56,9 @@ export default function Header(){
         { id: 1, label: "About", href: "#about" },
         { id: 2, label: "Experience", href: "#experience" },
         { id: 3, label: "Skills", href: "#skills" },
-        { id: 4, label: "Projects", href: "#projects" },
-        { id: 5, label: "Contact", href: "#contact" }
+        { id: 4, label: "Learning", href: "#learning" },
+        { id: 5, label: "Projects", href: "#projects" },
+        { id: 6, label: "Contact", href: "#contact" }
     ]
     return (
         <header

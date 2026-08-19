@@ -2,8 +2,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Section from "../components/layout/Section";
-import { Briefcase, Code, Database, Download, ExternalLink, Github, Play, Rocket, SendHorizonal } from "lucide-react";
-import ResumePdf from "../assets/Resume.pdf";
+import { Briefcase, Code, Database, Download, ExternalLink, Github, GraduationCap, Play, Rocket, SendHorizonal, Smartphone } from "lucide-react";
+import ResumePdf from "../assets/swati_resume.pdf";
 import ProfileImg from "../assets/image/profile-image.png";
 import Uniqode from "../assets/image/uniqode.png";
 import AicoImage from "../assets/image/aico.png";
@@ -11,6 +11,8 @@ import GoreadImg from "../assets/image/goread.png";
 import TechmarblesImg from "../assets/image/techmarbles.png";
 import BookMyShowImg from "../assets/image/bookMyShow.png";
 import ResumeBuilderImg from "../assets/image/resumeBuilder.png";
+import RollDiceImg from "../assets/image/roll_dice.png";
+import AiAgentImg from "../assets/image/Ai_agent.png";
 function Card({ className = "", children }) {
     return (
         <div
@@ -208,7 +210,7 @@ const projects = [
                 "TechMarbles is a professional web agency website showcasing services like web development, UI/UX design, and QA testing, along with its workflow, projects, and client feedback in a clean, modern layout.",
             image: TechmarblesImg,
             imageAlt: "Techmarbles website preview",
-            tags: ["WordPress", "HTML", "CSS", "JavaScript", "PHP"],
+            tags: ["WordPress(Elementor)", "HTML", "CSS", "JavaScript", "PHP"],
             liveUrl: "https://techmarbles.com/",
         },
         {
@@ -264,6 +266,45 @@ const projects = [
             ],
         },
     ]
+
+    const learningTracks = [
+        {
+            title: "Flutter",
+            focus: "Mobile App Development",
+            description:
+                "Learning cross-platform mobile development with Flutter and Dart — starting with interactive UI, state updates, and hands-on practice projects.",
+            topics: ["Dart", "StatefulWidget", "Buttons", "Random Logic", "Image Assets"],
+            projects: [
+                {
+                    title: "Roll a Dice",
+                    description:
+                        "A practice app where tapping a button randomly switches between dice images — built to learn StatefulWidget, onPressed handlers, and updating UI state in Flutter.",
+                    image: RollDiceImg,
+                    imageAlt: "Roll a Dice Flutter app preview",
+                    tags: ["Flutter", "Dart", "StatefulWidget"],
+                    githubUrl: "https://github.com/swatii7/flutter-roll-dice-app.git",
+                },
+            ],
+        },
+        {
+            title: "AI Agents",
+            focus: "Agentic AI Development",
+            description:
+                "Exploring the world of AI Agents — learning how autonomous agents plan, reason, and take actions using LLMs, tool use, and multi-step workflows.",
+            topics: ["LLMs", "Tool Use", "Prompt Engineering", "Agent Loops", "ElevenLabs"],
+            projects: [
+                {
+                    title: "Insurance Policy Assistant",
+                    description:
+                        "A voice-based AI agent that acts as a call assistant — customers can talk to it and get instant answers about insurance policy details, powered by ElevenLabs.",
+                    image: AiAgentImg,
+                    imageAlt: "Insurance Policy AI Call Assistant",
+                    tags: ["AI Agent", "ElevenLabs", "Voice AI"],
+                    liveUrl: "https://elevenlabs.io/app/talk-to?agent_id=agent_4501m09tdn5xe15tg4hh95qg7gcj&branch_id=agtbrch_4401m09tdnrmexfb0vfjzyyxx494",
+                },
+            ],
+        },
+    ];
 
     const [visibleProjects, setVisibleProjects] = useState(3);
 
@@ -632,10 +673,127 @@ const projects = [
                 </div>
             </Section>
 
+            {/* Learning */}
+            <Section
+                id="learning"
+                eyebrow="04."
+                title="My Learning"
+            >
+                <div data-animate="section-up" className="space-y-10">
+                    {learningTracks.map((track) => (
+                        <div key={track.title} className="space-y-8">
+                            <Card className="p-6 md:p-8">
+                                <div className="flex flex-col md:flex-row md:items-start gap-6">
+                                    <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#02569B]/15 text-[#02569B] shrink-0">
+                                        <Smartphone className="w-7 h-7" />
+                                    </div>
+                                    <div className="flex-1 space-y-4">
+                                        <div>
+                                            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-primary mb-1">
+                                                <GraduationCap className="w-4 h-4" />
+                                                {track.focus}
+                                            </div>
+                                            <h3 className="text-2xl font-bold text-primary-color">
+                                                {track.title}
+                                            </h3>
+                                        </div>
+                                        <p className="text-secondary-color text-sm md:text-base leading-relaxed">
+                                            {track.description}
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {track.topics.map((topic) => (
+                                                <span
+                                                    key={topic}
+                                                    className="inline-flex items-center justify-center rounded font-mono uppercase transition-colors bg-primary/20 text-primary border border-primary/30 px-2 py-0.5 text-[10px]"
+                                                >
+                                                    {topic}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </Card>
+
+                            <div>
+                                <h4 className="text-sm font-mono uppercase tracking-widest text-tertiary-color mb-4">
+                                    Projects built while learning
+                                </h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {track.projects.map((project) => (
+                                        <Card
+                                            key={project.title}
+                                            className="group flex flex-col overflow-hidden rounded-2xl border border-color bg-elevated hover:border-primary/50 transition-all"
+                                        >
+                                            <div className="relative h-48 md:h-56 w-full shrink-0 overflow-hidden">
+                                                {project.image ? (
+                                                    <img
+                                                        src={project.image}
+                                                        alt={project.imageAlt ?? project.title}
+                                                        className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                                                    />
+                                                ) : (
+                                                    <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#02569B]/20 via-primary/10 to-accent/10">
+                                                        <Smartphone className="w-12 h-12 text-[#02569B]/60 transition-transform duration-500 group-hover:scale-110" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex flex-1 flex-col p-6">
+                                                <div className="mb-4 flex flex-wrap gap-2">
+                                                    {project.tags.map((tag) => (
+                                                        <span
+                                                            key={tag}
+                                                            className="inline-flex items-center justify-center rounded font-mono uppercase transition-colors bg-primary/20 text-primary border border-primary/30 px-2 py-0.5 text-[10px]"
+                                                        >
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                                <h5 className="font-bold text-primary-color text-lg mb-2">
+                                                    {project.title}
+                                                </h5>
+                                                <p className="text-secondary-color text-sm mb-6 flex-1">
+                                                    {project.description}
+                                                </p>
+                                                {(project.githubUrl || project.liveUrl) ? (
+                                                    <div className="mt-auto flex gap-3 flex-wrap">
+                                                        {project.githubUrl && (
+                                                            <a
+                                                                href={project.githubUrl}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-elevated text-primary-color hover:border-primary/50 transition-all text-sm font-medium"
+                                                            >
+                                                                <Github className="w-4 h-4" />
+                                                                View Code
+                                                            </a>
+                                                        )}
+                                                        {project.liveUrl && (
+                                                            <a
+                                                                href={project.liveUrl}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-all text-sm font-medium"
+                                                            >
+                                                                <ExternalLink className="w-4 h-4" />
+                                                                Try Agent
+                                                            </a>
+                                                        )}
+                                                    </div>
+                                                ) : null}
+                                            </div>
+                                        </Card>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </Section>
+
             {/* Projects */}
             <Section
                 id="projects"
-                eyebrow="04."
+                eyebrow="05."
                 title="Featured Projects"
             >
                 <div data-animate="section-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -710,7 +868,7 @@ const projects = [
              <section className="py-20" id="contact">
                 <div data-animate="section-up" className="mx-auto w-full max-w-4xl px-4 sm:px-6 text-center mb-10">
                     <p className="font-mono text-primary text-sm">
-                        05. What's next?
+                        06. What's next?
                     </p>
                     <h2 className="text-4xl md:text-5xl font-black text-primary-color uppercase tracking-tight">
                         GET IN TOUCH
