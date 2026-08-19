@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Section from "../components/layout/Section";
 import { Briefcase, Code, Database, Download, ExternalLink, Github, GraduationCap, Play, Rocket, SendHorizonal, Smartphone } from "lucide-react";
-import ResumePdf from "../assets/Resume.pdf";
+import ResumePdf from "../assets/swati_resume.pdf";
 import ProfileImg from "../assets/image/profile-image.png";
 import Uniqode from "../assets/image/uniqode.png";
 import AicoImage from "../assets/image/aico.png";
@@ -12,6 +12,7 @@ import TechmarblesImg from "../assets/image/techmarbles.png";
 import BookMyShowImg from "../assets/image/bookMyShow.png";
 import ResumeBuilderImg from "../assets/image/resumeBuilder.png";
 import RollDiceImg from "../assets/image/roll_dice.png";
+import AiAgentImg from "../assets/image/Ai_agent.png";
 function Card({ className = "", children }) {
     return (
         <div
@@ -282,6 +283,24 @@ const projects = [
                     imageAlt: "Roll a Dice Flutter app preview",
                     tags: ["Flutter", "Dart", "StatefulWidget"],
                     githubUrl: "https://github.com/swatii7/flutter-roll-dice-app.git",
+                },
+            ],
+        },
+        {
+            title: "AI Agents",
+            focus: "Agentic AI Development",
+            description:
+                "Exploring the world of AI Agents — learning how autonomous agents plan, reason, and take actions using LLMs, tool use, and multi-step workflows.",
+            topics: ["LLMs", "Tool Use", "Prompt Engineering", "Agent Loops", "ElevenLabs"],
+            projects: [
+                {
+                    title: "Insurance Policy Assistant",
+                    description:
+                        "A voice-based AI agent that acts as a call assistant — customers can talk to it and get instant answers about insurance policy details, powered by ElevenLabs.",
+                    image: AiAgentImg,
+                    imageAlt: "Insurance Policy AI Call Assistant",
+                    tags: ["AI Agent", "ElevenLabs", "Voice AI"],
+                    liveUrl: "https://elevenlabs.io/app/talk-to?agent_id=agent_4501m09tdn5xe15tg4hh95qg7gcj&branch_id=agtbrch_4401m09tdnrmexfb0vfjzyyxx494",
                 },
             ],
         },
@@ -735,17 +754,30 @@ const projects = [
                                                 <p className="text-secondary-color text-sm mb-6 flex-1">
                                                     {project.description}
                                                 </p>
-                                                {project.githubUrl ? (
-                                                    <div className="mt-auto flex gap-3">
-                                                        <a
-                                                            href={project.githubUrl}
-                                                            target="_blank"
-                                                            rel="noreferrer"
-                                                            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-elevated text-primary-color hover:border-primary/50 transition-all text-sm font-medium"
-                                                        >
-                                                            <Github className="w-4 h-4" />
-                                                            View Code
-                                                        </a>
+                                                {(project.githubUrl || project.liveUrl) ? (
+                                                    <div className="mt-auto flex gap-3 flex-wrap">
+                                                        {project.githubUrl && (
+                                                            <a
+                                                                href={project.githubUrl}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-elevated text-primary-color hover:border-primary/50 transition-all text-sm font-medium"
+                                                            >
+                                                                <Github className="w-4 h-4" />
+                                                                View Code
+                                                            </a>
+                                                        )}
+                                                        {project.liveUrl && (
+                                                            <a
+                                                                href={project.liveUrl}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 transition-all text-sm font-medium"
+                                                            >
+                                                                <ExternalLink className="w-4 h-4" />
+                                                                Try Agent
+                                                            </a>
+                                                        )}
                                                     </div>
                                                 ) : null}
                                             </div>
